@@ -1,0 +1,38 @@
+# Prerequisites
+*.d
+/OBJ
+/History
+/__Previews
+/.vscode
+/EWARM/stm32l1
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.user
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Executables
+*.exe
+*.out
+*.app
+app.pro.user.4.8-pre1
+app.pro.user.4.9-pre1
