@@ -1,7 +1,8 @@
 #include "update.h"
 #include <QNetworkInterface>
 #include <QDebug>
-
+#include <QMessageBox>
+#include <QPushButton>
 update::update(QObject *parent) : QObject(parent)
 {
     DB = new DataBase;
@@ -26,20 +27,34 @@ QString update::getMacAdress()
      return ( thisNet.hardwareAddress() ); //获取该网卡的MAC
 }
 
-void update::start_update()
+bool update::start_update()
 {
-    QString info =QString("SELECT * FROM device_table WHERE mac_addr = \'70:85:C2:4B:A5:07\'");
+    QString info =QString("SELECT * FROM device_table WHERE mac_addr = \'%1\'").arg(MAC_Addr);
     DB->q.exec(info);
-    qDebug() << DB->q.next();
+    if(DB->q.next() == false){
+        qDebug() << "本电脑未注册!";
+        QMessageBox messageBox;
+        messageBox.setWindowTitle("错误");
+        messageBox.setIcon(QMessageBox::Warning);
+        messageBox.setText("本电脑未注册! 请联系智澜科技");
+        QPushButton button("确定");
+        messageBox.addButton(&button, QMessageBox::YesRole);
+        messageBox.exec();
+
+        return false;
+    }
 
     config.MAC_ADDR =  DB->q.value(1).toString();
     config.IS_LEGAL =  DB->q.value(2).toInt();
     config.Last_version = DB->q.value(3).toString();
     config.Download_number = DB->q.value(4).toInt();
+
     config.Changelog =  DB->q.value(5).toString();
     config.Mandatory =  DB->q.value(6).toInt();
     config.Create_time = DB->q.value(7).toString();
     config.Remarks= DB->q.value(8).toString();
+    config.Onlyoneurl = DB->q.value(9).toString();
+    return true;
     //qDebug() << config.MAC_ADDR << config.IS_LEGAL << config.Last_version << config.Download_number << config.Changelog;
     //qDebug() << config.Mandatory << config.Create_time << config.Remarks;
 }

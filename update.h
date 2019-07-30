@@ -10,6 +10,7 @@ public:
     int IS_LEGAL;
     QString Last_version;
     int Download_number;
+    QString Onlyoneurl;
     QString Changelog;
     int Mandatory;
     QString Create_time;
@@ -22,7 +23,7 @@ class update : public QObject
 public:
     explicit update(QObject *parent = nullptr);
     QString getMacAdress();
-    void start_update();
+    bool start_update();
     void check_url();
     DataBase *DB;
     update_config config;

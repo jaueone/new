@@ -21,6 +21,7 @@ class Download : public QWidget
 
 public:
     explicit Download(QWidget *parent = nullptr);
+    bool is_res;
     ~Download();
 signals:
     void downloadFinished();
@@ -39,6 +40,7 @@ private slots:
     void on_stopButton_released();
 
     void on_cancelButton_released();
+    void update();
 
 private:
     Ui::Download *ui;
@@ -60,6 +62,7 @@ private:
     QNetworkAccessManager* m_manager;
 
     bool is_downloadok;
+
 
 };
 

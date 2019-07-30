@@ -16,7 +16,16 @@ Download::Download(QWidget *parent) :
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     //读取服务器配置信息
-    Update.start_update();
+    if(!Update.start_update())
+    {
+        is_res = false;
+        QTimer *timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+        timer->start(500);
+    }
+    else
+    {
+        is_res = true;
     ui->textBrowser->append("welcome!  " + Update.config.Remarks);
     ui->textBrowser->append("The Last_version:   "+Update.config.Last_version);
     ui->textBrowser->append("Changelog:   " + Update.config.Changelog);
@@ -25,6 +34,7 @@ Download::Download(QWidget *parent) :
     m_downloadDir = QDir::current();
     m_fileName = "";
     m_userAgentString = QString ("%1/%2 (Qt; zjzl)").arg (qApp->applicationName(),qApp->applicationVersion());
+    }
 
 }
 
@@ -207,9 +217,15 @@ void Download::saveFile(qint64 received, qint64 total)
 void Download::on_stopButton_released()
 {
     ui->textBrowser->append(tr("There are %1 files in this update.").arg(Update.config.Download_number));
+
+    if(Update.config.Download_number == 1)
+    {
+        QUrl down_url(Update.config.Onlyoneurl);
+        setFileName(down_url.toString().split ("/").last());
+        startDownload(down_url);
+        return;
+    }
     Update.check_url();
-
-
     for (int i = 0; i < Update.config.Update_URL.size(); i ++) {
         is_downloadok = false;
         QUrl down_url(Update.config.Update_URL.at(i));
@@ -225,6 +241,11 @@ void Download::on_stopButton_released()
 }
 
 void Download::on_cancelButton_released()
+{
+    qApp->exit();
+}
+
+void Download::update()
 {
     qApp->exit();
 }
