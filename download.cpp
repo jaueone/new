@@ -236,6 +236,19 @@ void Download::on_stopButton_released()
          QApplication::processEvents();//异步等待
         }
     }
+    QMessageBox messageBox;
+    messageBox.setWindowTitle("成功");
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setText("升级成功,请重新打开软件");
+    QPushButton button("确定");
+    messageBox.addButton(&button, QMessageBox::YesRole);
+    messageBox.exec();
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(500);
+    //QProcess* caller = new QProcess(this);//创建对象，指定父类指针
+    //caller->start("Update.exe");//启动notepaid
+
 
 
 }

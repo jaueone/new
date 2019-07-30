@@ -36,7 +36,7 @@ bool update::start_update()
         QMessageBox messageBox;
         messageBox.setWindowTitle("错误");
         messageBox.setIcon(QMessageBox::Warning);
-        messageBox.setText("本电脑未注册! 请联系智澜科技");
+        messageBox.setText("本电脑未注册! 请联系烽火科技");
         QPushButton button("确定");
         messageBox.addButton(&button, QMessageBox::YesRole);
         messageBox.exec();
